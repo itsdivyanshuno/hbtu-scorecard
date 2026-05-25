@@ -2,14 +2,29 @@
 
 <div align="center">
 
-### Academic Performance • Rank Tracking • Analytics Dashboard
+<h1>Academic Dashboard • Rank Tracking • Analytics</h1>
 
-🔗 **Live Demo:** https://hbtu-scorecard.vercel.app/
+<p>
+A modern student performance dashboard built for HBTU students with Firebase backend, subject analytics and rank tracking.
+</p>
 
-![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
-![Firebase](https://img.shields.io/badge/Firebase-Firestore-orange?style=for-the-badge&logo=firebase)
-![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel)
-![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+<p>
+
+<a href="https://hbtu-scorecard.vercel.app">
+
+<img src="https://img.shields.io/badge/LIVE-DEMO-orange?style=for-the-badge&logo=vercel">
+
+</a>
+
+<img src="https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react">
+
+<img src="https://img.shields.io/badge/Firebase-Firestore-orange?style=for-the-badge&logo=firebase">
+
+<img src="https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel">
+
+<img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge">
+
+</p>
 
 </div>
 
@@ -17,41 +32,43 @@
 
 # ✨ Features
 
-✅ Student search by roll number
+✔ Student search by roll number
 
-✅ Overall rank system
+✔ Overall score tracking
 
-✅ Subject wise marks dashboard
+✔ Overall ranking system
 
-✅ Performance progress visualization
+✔ Subject-wise marks display
 
-✅ Subject rankings
+✔ Subject rank tracking
 
-✅ Top performers leaderboard
+✔ Performance visualization
 
-✅ Responsive desktop + mobile UI
+✔ Top performers leaderboard
 
-✅ Dark premium interface
+✔ Responsive desktop + mobile UI
 
-✅ Firebase cloud backend
+✔ Premium dark interface
 
-✅ Real time updates
+✔ Firebase cloud backend
+
+✔ Real-time updates
 
 ---
 
 # 🖼 UI Showcase
 
-## 🔍 Search Interface
+## Search Interface
 
 <p align="center">
 
-<img src="./images/search-desktop.png" width="800">
+<img src="./images/search-desktop.png" width="850">
 
 </p>
 
 ---
 
-## 📱 Mobile Experience
+## Mobile Experience
 
 <p align="center">
 
@@ -63,7 +80,7 @@
 
 ---
 
-## 📊 Student Dashboard
+## Student Dashboard
 
 <p align="center">
 
@@ -73,21 +90,21 @@
 
 ---
 
-## 📚 Subject Analytics Cards
+## Subject Analytics Cards
 
 <p align="center">
 
-<img src="./images/subjects.png" width="800">
+<img src="./images/subjects.png" width="850">
 
 </p>
 
 ---
 
-## 🏆 Top Rankers
+## Top Rankers
 
 <p align="center">
 
-<img src="./images/top-rankers.png" width="800">
+<img src="./images/top-rankers.png" width="850">
 
 </p>
 
@@ -100,9 +117,9 @@ React + Vite
       ↓
 Firebase Firestore
       ↓
-Rank Engine
+Ranking Engine
       ↓
-UI Dashboard
+Analytics Dashboard
 ⚙ Tech Stack
 Frontend
 React
@@ -112,15 +129,9 @@ Backend
 Firebase Firestore
 Deployment
 Vercel
-🚀 Run Locally
-git clone https://github.com/itsdivyanshuno/hbtu-scorecard.git
-
-cd hbtu-scorecard
-
-npm install
-
-npm run dev
 📂 Project Structure
+hbtu-scorecard/
+
 src/
 
 App.jsx
@@ -130,14 +141,30 @@ firebase.js
 index.css
 
 assets/
-🔮 Future Roadmap
-📈 Rank history graph
-🔍 Search by student name
-🏅 Achievement badges
-📊 Semester analytics
-📱 Installable PWA
-🔐 Admin dashboard
-🎯 Subject insights
+
+images/
+
+README.md
+🚀 Run Locally
+git clone https://github.com/itsdivyanshuno/hbtu-scorecard.git
+
+cd hbtu-scorecard
+
+npm install
+
+npm run dev
+🔮 Future Plans
+Rank history graph
+Search by name
+Achievement badges
+Semester analytics
+Installable PWA
+Admin dashboard
+Subject insights
+🌐 Live Project
+
+https://hbtu-scorecard.vercel.app/
+
 👨‍💻 Developer
 
-Made with ❤️ by itsdivyanshuno
+Built by itsdivyanshuno
