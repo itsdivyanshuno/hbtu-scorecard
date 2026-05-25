@@ -400,7 +400,7 @@ subjects
 
 }
 
-Subjects
+<span> Subjects</span>
 
 </Chip>
 
