@@ -208,6 +208,6 @@ https://hbtu-scorecard.vercel.app/
 
 Built by **itsdivyanshuno**
 
-Special thanks to ChatGPT 🤝
+</div>
 
 </div>
