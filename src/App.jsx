@@ -1,129 +1,186 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+
 import { db } from "./firebase";
 
 import {
-doc,
-getDoc,
-collection,
-getDocs
-}
-from "firebase/firestore";
+  doc,
+  getDoc,
+  collection,
+  getDocs
+} from "firebase/firestore";
 
-function App(){
+function App() {
 
-const [roll,setRoll]=useState("");
-const [student,setStudent]=useState(null);
-const [subjects,setSubjects]=useState({});
-const [leaderboard,setLeaderboard]=useState([]);
+  const [roll, setRoll] = useState("");
+  const [student, setStudent] = useState(null);
+  const [subjects, setSubjects] = useState({});
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-async function searchStudent(){
+  async function searchStudent() {
 
-const studentSnap=
-await getDoc(
-doc(db,"students",roll)
-);
+    setLoading(true);
 
-if(!studentSnap.exists()){
+    const studentSnap =
+      await getDoc(
+        doc(db, "students", roll)
+      );
 
-alert("Student not found");
-return;
+    if (!studentSnap.exists()) {
 
-}
+      alert("Student not found");
 
-setStudent(
-studentSnap.data()
-);
+      setLoading(false);
 
-const subSnap=
-await getDocs(
+      return;
 
-collection(
-db,
-"students",
-roll,
-"subjects"
-)
+    }
 
-);
+    setStudent(studentSnap.data());
 
-let temp={};
+    const subSnap =
+      await getDocs(
+        collection(
+          db,
+          "students",
+          roll,
+          "subjects"
+        )
+      );
 
-subSnap.forEach(
+    let temp = {};
 
-x=>{
+    subSnap.forEach(x => {
 
-temp[x.id]=x.data();
+      temp[x.id] = x.data();
 
-}
+    });
 
-);
+    setSubjects(temp);
 
-setSubjects(temp);
+    const all =
+      await getDocs(
+        collection(
+          db,
+          "students"
+        )
+      );
 
-const allStudents=
-await getDocs(
-collection(
-db,
-"students"
-)
-);
+    let board = [];
 
-let board=[];
+    all.forEach(s => {
 
-allStudents.forEach(
+      const d = s.data();
 
-s=>{
+      board.push({
 
-const d=s.data();
+        name: d.name,
 
-board.push({
+        rank: d.overallRank,
 
-name:d.name,
+        total: d.overallTotal
 
-rank:d.overallRank,
+      });
 
-total:d.overallTotal
+    });
 
-});
+    board.sort(
+      (a, b) =>
+        a.rank - b.rank
+    );
 
-}
+    setLeaderboard(
+      board.slice(0, 10)
+    );
 
-);
+    setLoading(false);
 
-board.sort(
-(a,b)=>
-a.rank-b.rank
-);
+  }
 
-setLeaderboard(
-board.slice(0,10)
-);
-
-}
-
-return(
+  return (
 
 <div style={{
 
 minHeight:"100vh",
 
-padding:"25px",
+background:
+"linear-gradient(180deg,#050505,#0b0907,#12100d)",
 
-background:"#050505",
+padding:"20px",
 
 color:"white",
 
-fontFamily:"Arial"
+fontFamily:
+"'Poppins',sans-serif"
 
 }}>
 
+<motion.div
+
+initial={{
+opacity:0,
+y:-20
+}}
+
+animate={{
+opacity:1,
+y:0
+}}
+
+style={{
+
+maxWidth:"1250px",
+
+margin:"auto",
+
+background:
+"rgba(18,18,18,.78)",
+
+backdropFilter:
+"blur(14px)",
+
+padding:
+"clamp(28px,5vw,50px)",
+
+borderRadius:"34px",
+
+border:
+"1px solid rgba(255,179,71,.08)",
+
+boxShadow:
+"0 0 50px rgba(255,140,40,.08)",
+
+overflow:"hidden"
+
+}}
+
+>
+
 <h1 style={{
 
-textAlign:"center",
+fontSize:
+"clamp(34px,7vw,60px)",
 
-fontSize:"42px",
+fontWeight:"800",
 
-color:"#ff7b00"
+lineHeight:"1.3",
+
+margin:"0 0 16px 0",
+
+letterSpacing:"-.5px",
+
+textShadow:
+"0 0 25px rgba(255,179,71,.15)",
+
+background:
+"linear-gradient(90deg,#ffffff,#ffb347,#ff8c42)",
+
+WebkitBackgroundClip:
+"text",
+
+WebkitTextFillColor:
+"transparent"
 
 }}>
 
@@ -133,27 +190,30 @@ color:"#ff7b00"
 
 <p style={{
 
-textAlign:"center",
+color:"#9b9b9b",
 
-color:"#aaa"
+fontWeight:"500",
+
+fontSize:"15px",
+
+letterSpacing:".3px",
+
+marginBottom:"28px"
 
 }}>
 
-📚 Track • 🏆 Compare • 🚀 Improve
+📚 Academic Dashboard • 🏆 Rank Tracker • 🚀 Insights
 
 </p>
 
 <div style={{
 
-display:"flex",
+display:"grid",
 
-justifyContent:"center",
+gridTemplateColumns:
+"repeat(auto-fit,minmax(240px,1fr))",
 
-gap:"10px",
-
-marginTop:"20px",
-
-flexWrap:"wrap"
+gap:"14px"
 
 }}>
 
@@ -162,13 +222,10 @@ flexWrap:"wrap"
 value={roll}
 
 onChange={
-
 e=>
-
 setRoll(
 e.target.value
 )
-
 }
 
 placeholder=
@@ -176,24 +233,37 @@ placeholder=
 
 style={{
 
-padding:"15px",
-
-width:"300px",
+padding:"18px",
 
 background:"#111",
 
+border:
+"1px solid rgba(255,179,71,.12)",
+
+borderRadius:"20px",
+
 color:"white",
 
-border:
-"1px solid #ff7b00",
+outline:"none",
 
-borderRadius:"15px"
+fontSize:"15px",
+
+fontFamily:
+"'Poppins',sans-serif"
 
 }}
 
 ></input>
 
-<button
+<motion.button
+
+whileHover={{
+y:-2
+}}
+
+whileTap={{
+scale:.98
+}}
 
 onClick={
 searchStudent
@@ -201,25 +271,49 @@ searchStudent
 
 style={{
 
-padding:"15px",
+padding:"18px",
 
-background:"#ff7b00",
+background:
+"linear-gradient(135deg,#ff8c42,#ffb347)",
 
 border:"none",
 
-borderRadius:"15px",
+borderRadius:"20px",
 
-fontWeight:"bold"
+fontWeight:"700",
+
+fontSize:"15px",
+
+cursor:"pointer",
+
+color:"#111",
+
+fontFamily:
+"'Poppins',sans-serif"
 
 }}
 
 >
 
-🚀 Search
+{
 
-</button>
+loading
+
+?
+
+"🔄 Searching"
+
+:
+
+"🚀 Search"
+
+}
+
+</motion.button>
 
 </div>
+
+</motion.div>
 
 {
 
@@ -229,76 +323,76 @@ student && (
 
 <div style={{
 
+maxWidth:"1250px",
+
+margin:"26px auto",
+
 display:"grid",
 
 gridTemplateColumns:
-"repeat(auto-fit,minmax(350px,1fr))",
+"repeat(auto-fit,minmax(320px,1fr))",
 
-gap:"20px",
-
-marginTop:"30px"
+gap:"20px"
 
 }}>
 
-<div style={{
+<motion.div
 
-background:"#111",
+whileHover={{
+y:-3
+}}
 
-padding:"25px",
+style={{
 
-borderRadius:"22px",
+background:
+"linear-gradient(145deg,#111111,#1b1b1b)",
+
+padding:"30px",
+
+borderRadius:"30px",
 
 border:
-"1px solid #ff7b00",
+"1px solid rgba(255,179,71,.05)",
 
-display:"flex",
+cursor:"pointer"
 
-flexDirection:"column",
+}}
 
-gap:"18px"
+>
+
+<h2 style={{
+
+fontSize:"30px",
+
+fontWeight:"700",
+
+marginBottom:"10px"
 
 }}>
-
-<div>
-
-<h2>
 
 👤 {student.name}
 
 </h2>
 
-<h3>
+<div style={{
 
-🏆 Overall Rank
+display:"flex",
 
-#{student.overallRank}
+gap:"10px",
 
-</h3>
+flexWrap:"wrap",
 
-<h3>
+marginTop:"18px"
 
-📈 Overall Score
+}}>
 
-{student.overallTotal}/400
+<Chip>🏆 Rank #{student.overallRank}</Chip>
 
-</h3>
+<Chip>📈 {student.overallTotal}/400</Chip>
 
-</div>
+<Chip>
 
-<hr style={{
-
-borderColor:
-"rgba(255,123,0,0.3)"
-
-}}/>
-
-<div>
-
-<h3>
-
-📚 Subjects :
-
-{
+📚 {
 
 Object.keys(
 subjects
@@ -306,110 +400,21 @@ subjects
 
 }
 
-</h3>
+Subjects
 
-<h3>
-
-🔥 Average :
-
-{
-
-(
-student
-.overallTotal
-
-/
-
-Object.keys(
-subjects
-).length
-
-)
-
-.toFixed(1)
-
-}
-
-/100
-
-</h3>
-
-<h3>
-
-🎯 Best Subject :
-
-{
-
-Object.entries(
-subjects
-)
-
-.sort(
-
-(a,b)=>
-
-b[1].total
-
--
-
-a[1].total
-
-)
-
-[0]
-
-?.[0]
-
-||
-
-"-"
-
-}
-
-</h3>
-
-<h3>
-
-⭐ Highest Marks :
-
-{
-
-Math.max(
-
-...Object.values(
-subjects
-)
-
-.map(
-
-x=>
-
-x.total
-
-)
-
-)
-
-}
-
-/100
-
-</h3>
+</Chip>
 
 </div>
 
-<hr style={{
+<h3 style={{
 
-borderColor:
-"rgba(255,123,0,0.3)"
+marginTop:"30px",
 
-}}/>
+fontWeight:"600"
 
-<div>
+}}>
 
-<h3>
-
-📊 Subject Performance
+📊 Performance
 
 </h3>
 
@@ -424,72 +429,62 @@ subjects
 ([sub,data])=>(
 
 <div
-
 key={sub}
 
 style={{
 
-marginBottom:
-"14px"
+marginTop:"18px"
 
 }}
 
 >
 
-<div style={{
-
-display:"flex",
-
-justifyContent:
-"space-between"
-
-}}>
-
-<span>
-
-{sub}
-
-</span>
-
-<span>
-
-{data.total}/100
-
-</span>
-
-</div>
+<Row
+l={sub}
+v={`${data.total}/100`}
+/>
 
 <div style={{
 
-width:"100%",
-
-height:"8px",
+height:"10px",
 
 background:"#222",
 
 borderRadius:"20px",
 
-marginTop:"5px"
+marginTop:"8px"
 
 }}>
 
-<div style={{
+<motion.div
 
+initial={{
+width:0
+}}
+
+animate={{
 width:
+`${data.total}%`
+}}
 
-`${data.total}%`,
+transition={{
+duration:1
+}}
+
+style={{
 
 height:"100%",
 
 background:
-"#ff7b00",
+"linear-gradient(90deg,#ff8c42,#ffb347)",
 
-borderRadius:
-"20px"
+borderRadius:"20px"
 
-}}>
+}}
 
-</div>
+>
+
+</motion.div>
 
 </div>
 
@@ -501,9 +496,7 @@ borderRadius:
 
 }
 
-</div>
-
-</div>
+</motion.div>
 
 <div style={{
 
@@ -512,7 +505,7 @@ display:"grid",
 gridTemplateColumns:
 "repeat(auto-fit,minmax(240px,1fr))",
 
-gap:"15px"
+gap:"18px"
 
 }}>
 
@@ -526,20 +519,27 @@ subjects
 
 ([sub,data])=>(
 
-<div
+<motion.div
 
 key={sub}
 
+whileHover={{
+y:-3
+}}
+
 style={{
 
-background:"#111",
+background:
+"linear-gradient(145deg,#111111,#1b1b1b)",
 
-padding:"18px",
+padding:"24px",
 
-borderRadius:"20px",
+borderRadius:"26px",
 
 border:
-"1px solid rgba(255,123,0,0.4)"
+"1px solid rgba(255,179,71,.05)",
+
+cursor:"pointer"
 
 }}
 
@@ -547,7 +547,11 @@ border:
 
 <h2 style={{
 
-color:"#ff7b00"
+color:"#ffb347",
+
+fontWeight:"700",
+
+fontSize:"24px"
 
 }}>
 
@@ -555,137 +559,27 @@ color:"#ff7b00"
 
 </h2>
 
-<hr/>
-
-<div style={{
-
-display:"flex",
-
-justifyContent:
-"space-between"
-
-}}>
-
-<span>Mid Sem I</span>
-
-<span>{data.m1}/15</span>
-
-</div>
-
-<div style={{
-
-display:"flex",
-
-justifyContent:
-"space-between",
-
-marginTop:"8px"
-
-}}>
-
-<span>Mid Sem II</span>
-
-<span>{data.m2}/15</span>
-
-</div>
-
-<div style={{
-
-display:"flex",
-
-justifyContent:
-"space-between",
-
-marginTop:"8px"
-
-}}>
-
-<span>End Sem</span>
-
-<span>{data.end}/50</span>
-
-</div>
-
-<div style={{
-
-display:"flex",
-
-justifyContent:
-"space-between",
-
-marginTop:"8px"
-
-}}>
-
-<span>
-
-Internal Assessment
-
-</span>
-
-<span>
-
-{data.ia}/20
-
-</span>
-
-</div>
-
 <hr style={{
-
-marginTop:"12px"
-
+borderColor:"#222"
 }}/>
 
-<div style={{
+<Row l="📝 Mid Sem I" v={`${data.m1}/15`} />
 
-display:"flex",
+<Row l="📝 Mid Sem II" v={`${data.m2}/15`} />
 
-justifyContent:
-"space-between"
+<Row l="📚 End Sem" v={`${data.end}/50`} />
 
-}}>
+<Row l="🏫 IA" v={`${data.ia}/20`} />
 
-<b>
+<hr style={{
+borderColor:"#222"
+}}/>
 
-⭐ Total
+<Row l="⭐ Total" v={`${data.total}/100`} />
 
-</b>
+<Row l="🏆 Rank" v={`#${data.rank}`} />
 
-<b>
-
-{data.total}/100
-
-</b>
-
-</div>
-
-<div style={{
-
-display:"flex",
-
-justifyContent:
-"space-between",
-
-marginTop:"8px"
-
-}}>
-
-<b>
-
-🏆 Rank
-
-</b>
-
-<b>
-
-#{data.rank}
-
-</b>
-
-</div>
-
-</div>
+</motion.div>
 
 )
 
@@ -699,13 +593,17 @@ marginTop:"8px"
 
 <div style={{
 
-marginTop:"35px"
+maxWidth:"1250px",
+
+margin:"42px auto"
 
 }}>
 
 <h2 style={{
 
-color:"#ff7b00"
+fontWeight:"700",
+
+marginBottom:"18px"
 
 }}>
 
@@ -718,21 +616,24 @@ color:"#ff7b00"
 display:"grid",
 
 gridTemplateColumns:
-"repeat(auto-fit,minmax(250px,1fr))",
+"repeat(auto-fit,minmax(220px,1fr))",
 
-gap:"12px"
+gap:"14px"
 
 }}>
 
 {
 
 leaderboard.map(
-
 x=>(
 
-<div
+<motion.div
 
 key={x.rank}
+
+whileHover={{
+y:-3
+}}
 
 style={{
 
@@ -742,15 +643,17 @@ x.rank===student.overallRank
 
 ?
 
-"#ff7b00"
+"linear-gradient(135deg,#ff8c42,#ffb347)"
 
 :
 
-"#111",
+"linear-gradient(145deg,#111111,#1b1b1b)",
 
-padding:"15px",
+padding:"20px",
 
-borderRadius:"15px",
+borderRadius:"22px",
+
+cursor:"pointer",
 
 color:
 
@@ -758,7 +661,7 @@ x.rank===student.overallRank
 
 ?
 
-"black"
+"#111"
 
 :
 
@@ -768,19 +671,17 @@ x.rank===student.overallRank
 
 >
 
-🥇 Rank #
-
-{x.rank}
+🥇 Rank #{x.rank}
 
 <br/>
 
-{x.name}
+👤 {x.name}
 
 <br/>
 
 ⭐ {x.total}
 
-</div>
+</motion.div>
 
 )
 
@@ -789,6 +690,26 @@ x.rank===student.overallRank
 }
 
 </div>
+
+</div>
+
+<div style={{
+
+textAlign:"center",
+
+padding:"34px",
+
+color:"#777",
+
+fontSize:"14px"
+
+}}>
+
+⚡ Built with React + Firebase
+
+<br/>
+
+🧑‍💻 @itsdivyanshuno
 
 </div>
 
@@ -797,6 +718,82 @@ x.rank===student.overallRank
 )
 
 }
+
+</div>
+
+);
+
+}
+
+function Chip({children}){
+
+return(
+
+<div style={{
+
+background:"#1c1c1c",
+
+padding:"10px 15px",
+
+borderRadius:"14px",
+
+border:
+"1px solid rgba(255,179,71,.08)",
+
+fontWeight:"600",
+
+fontSize:"14px",
+
+letterSpacing:".2px"
+
+}}>
+
+{children}
+
+</div>
+
+);
+
+}
+
+function Row({l,v}){
+
+return(
+
+<div style={{
+
+display:"flex",
+
+justifyContent:
+"space-between",
+
+marginBottom:"12px"
+
+}}>
+
+<span style={{
+
+fontWeight:"500",
+
+color:"#d0d0d0"
+
+}}>
+
+{l}
+
+</span>
+
+<span style={{
+
+fontWeight:"600",
+
+color:"#fff"
+
+}}>
+
+{v}
+
+</span>
 
 </div>
 
