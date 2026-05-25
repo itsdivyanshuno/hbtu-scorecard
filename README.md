@@ -88,16 +88,6 @@ Modern student performance dashboard for HBTU students built using React + Fireb
 
 ---
 
-## 📚 Subject Cards
-
-<p align="center">
-
-<img src="./images/subjects.jpeg" width="650" height="320"/>
-
-</p>
-
----
-
 ## 🏆 Top Rankers
 
 <p align="center">
