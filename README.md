@@ -58,7 +58,7 @@ Modern student performance dashboard for HBTU students built using React + Fireb
 
 <p align="center">
 
-<img src="./images/search-desktop.png" width="900"/>
+<img src="./images/search-desktop.jpg" width="900"/>
 
 </p>
 
@@ -68,9 +68,9 @@ Modern student performance dashboard for HBTU students built using React + Fireb
 
 <p align="center">
 
-<img src="./images/mobile-search.png" width="260"/>
+<img src="./images/mobile-search.jpeg" width="260"/>
 
-<img src="./images/mobile-dashboard.png" width="260"/>
+<img src="./images/mobile-dashboard.jpeg" width="260"/>
 
 </p>
 
@@ -80,7 +80,7 @@ Modern student performance dashboard for HBTU students built using React + Fireb
 
 <p align="center">
 
-<img src="./images/dashboard.png" width="900"/>
+<img src="./images/dashboard.jpg" width="900"/>
 
 </p>
 
@@ -90,7 +90,7 @@ Modern student performance dashboard for HBTU students built using React + Fireb
 
 <p align="center">
 
-<img src="./images/subjects.png" width="900"/>
+<img src="./images/subjects.jpeg" width="900"/>
 
 </p>
 
@@ -100,7 +100,7 @@ Modern student performance dashboard for HBTU students built using React + Fireb
 
 <p align="center">
 
-<img src="./images/top-rankers.png" width="900"/>
+<img src="./images/top-rankers.jpg" width="900"/>
 
 </p>
 
