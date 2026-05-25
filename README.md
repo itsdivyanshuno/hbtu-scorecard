@@ -92,7 +92,7 @@ Modern student performance dashboard for HBTU students built using React + Fireb
 
 <p align="center">
 
-<img src="./images/subjects.jpeg" width="650"/>
+<img src="./images/subjects.jpeg" width="650" height="320"/>
 
 </p>
 
